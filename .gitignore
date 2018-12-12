@@ -17,6 +17,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Emacs artifacts
+*~
+
 # =========================
 # Operating System Files
 # =========================
@@ -45,3 +48,6 @@ Temporary Items
 # Custom
 node_modules
 release-watch.bat
+
+# generated code
+dist/

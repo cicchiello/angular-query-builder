@@ -1,8 +1,8 @@
 ﻿angular.module('app', [
-    'angular-query-builder'
+    'cloudant-query-builder'
 ])
 
-.constant('APP_VERSION', angular_query_builder_version)
+.constant('APP_VERSION', cloudant_query_builder_version)
 
 .config(['$httpProvider', '$logProvider', 'DemoDataProvider', function ($httpProvider, $logProvider, DemoDataProvider) {
 
