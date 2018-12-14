@@ -15,7 +15,6 @@
         return {
             'request': function (request) {
                 if (request.url.indexOf("https://localhost/aqb/typeahead/object-types/") > -1 ||
-                    request.url.indexOf("https://localhost/aqb/typeahead/fma/") > -1 ||
 		    request.url.indexOf("https://localhost/aqb/typeahead/bool/") > -1) {
                     request.timeout = 1;
                 }
@@ -25,10 +24,6 @@
                 if (response.config.url.indexOf("https://localhost/aqb/typeahead/object-types/") > -1) {
                     // Some object types returned by the typeahead
                     response.data = demoData.getObjectTypes();
-                    response.status = 200;
-                } else if (response.config.url.indexOf("https://localhost/aqb/typeahead/fma/") > -1) {
-                    // Some FMA terms returned by the typeahead
-                    response.data = demoData.getFMATerms();
                     response.status = 200;
                 } else if (response.config.url.indexOf("https://localhost/aqb/typeahead/bool/") > -1) {
 		    response.data = demoData.getBoolTypes();
@@ -84,7 +79,7 @@
         ]
     };
     //$scope.searchContainer = emptySearchContainer;
-    $scope.searchContainer = DemoData.getSearchContainer1();
+    $scope.searchContainer = DemoData.getInitialSearchContainer();
 }])
 
 .provider('DemoData', function DemoDataProvider() {
@@ -102,187 +97,111 @@
                 }
             ];
         };
-        this.getObjectTypes = function () {
-            return [
-                {
-                    "data": "Subject",
-                    "displayName": "Subject"
-                },
-                {
-                    "data": "Study",
-                    "displayName": "Study"
-                },
-                {
-                    "data": "RawImage",
-                    "displayName": "Raw Image"
-                },
-                {
-                    "data": "SegmentationImage",
-                    "displayName": "Segmentation Image"
-                },
-                {
-                    "data": "ClinicalStudyData",
-                    "displayName": "Clinical Study Data"
-                },
-                {
-                    "data": "ClinicalStudyDefinition",
-                    "displayName": "Clinical Study Definition"
-                },
-                {
-                    "data": "StatisticalModel",
-                    "displayName": "Statistical Model"
-                },
-                {
-                    "data": "GenomicData",
-                    "displayName": "Genomic Data"
-                },
-                {
-                    "data": "GenomicSeries",
-                    "displayName": "Genomic Series"
-                },
-                {
-                    "data": "GenomicPlatform",
-                    "displayName": "Genomic Platform"
-                }
-            ];
-        };
-        this.getFMATerms = function () {
-            return [
-                {
-                    "data": "3734",
-                    "displayName": "Aorta"
-                },
-                {
-                    "data": "3740",
-                    "displayName": "Bulb of aorta"
-                },
-                {
-                    "data": "7195",
-                    "displayName": "Lung"
-                },
-                {
-                    "data": "7203",
-                    "displayName": "Kidney"
-                },
-                {
-                    "data": "50801",
-                    "displayName": "Brain"
-                }
-            ];
-        };
-        this.getSourceFields = getSourceFields;
-	this.getFirmFields = getFirmFields;
-	this.getSourceTypes = getSourceTypes;
+	this.getSourceTypes = function() {
+	    return expandSourceTypes(sourceTypeDescriptors());
+	}
         this.getLogicalOperators = function () {
-            return [
-                {
-                    "name": "And",
-                    "displayName": "AND",
-                    "position": 1
-                },
-                {
-                    "name": "Or",
-                    "displayName": "OR",
-                    "position": 2
-                }
-            ];
-        };
-        this.getSearchContainer1 = function () {
-            return {
-                "groups": [
-                    {
-                        "logicalOperator": {
-                            "name": "And",
-                            "displayName": "AND"
-                        },
-                        "sourceType": {
-                            "name": "FirmStats",
-                            "displayName": "foo Objects"
-                        },
-                        "conditions": [
-                             {
-                                 "sourceField": {
-                                     "name": "retail",
-				     "displayName": "retail"
-                                 },
-                                 "comparisonOperator": {
-                                     "name": ":",
-				     "displayName": ":",
-				     "queryText": ":"
-                                 },
-                                 "inputItem": {
-                                     "data": "true",
-                                     "displayName": "true",
-                                     "isTypeahead": true
-                                 }
-                             }
-                        ],
-                        "groups": [
-                            {
-                                "logicalOperator": {
-                                    "name": "And",
-                                    "displayName": "AND"
-                                },
-                                "sourceType": {
-                                    "name": "Advisors",
-                                    "displayName": "foo advisors"
-                                },
-                                "conditions": [
-                                     {
-                                         "sourceField": {
-                                             "name": "AnatomicalRegion",
-                                             "displayName": "Anatomical Region"
-                                         },
-                                         "comparisonOperator": {
-                                             "name": "Equals",
-                                             "displayName": "="
-                                         },
-                                         "inputItem": {
-                                             "data": "7203",
-                                             "displayName": "Kidney",
-                                             "isTypeahead": true
-                                         }
-                                     },
-                                     {
-                                         "sourceField": {
-                                             "name": "Type",
-                                             "displayName": "Type"
-                                         },
-                                         "comparisonOperator": {
-                                             "name": "Equals",
-                                             "displayName": "="
-                                         },
-                                         "inputItem": {
-                                             "data": "RawImage",
-                                             "displayName": "Raw Image",
-                                             "isTypeahead": true
-                                         }
-                                     },
-                                     {
-                                         "sourceField": {
-                                             "name": "Type",
-                                             "displayName": "Type"
-                                         },
-                                         "comparisonOperator": {
-                                             "name": "Equals",
-                                             "displayName": "="
-                                         },
-                                         "inputItem": {
-                                             "data": "ClinicalStudyData",
-                                             "displayName": "Clinical Study Data",
-                                             "isTypeahead": true
-                                         }
-                                     }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            };
-        }
+	    return expandLogicalOperators(logicalOperatorDescriptors());
+	}
+        this.getInitialSearchContainer = getInitialSearchContainer;
     }
 
     this.$get = function demoDataFactory() {
         return new DemoData();
     };
 });
+
+
+function expandLogicalOperators(descriptors) {
+    var result = [];
+    var pos = 1;
+    for (var key in descriptors) {
+	var entry = {
+	    "name": key,
+	    "displayName": descriptors[key].displayName,
+	    "position": pos++
+	};
+	result.push(entry);
+    }
+    return result;
+}
+
+
+function expandFields(descriptors) {
+    var fields = [];
+    var fpos = 1;
+    for (var dkey in descriptors) {
+	var fentry = {};
+	fentry.name = dkey;
+	fentry.displayName = descriptors[dkey].displayName;
+	fentry.position = fpos++;
+	fentry.comparisonOperators = [];
+	var cdescrs = comparisonOperatorDescriptors();
+	var cpos = 1;
+	for (var ckey in descriptors[dkey].comparisonOperators) {
+	    var centry = {};
+	    centry.name = ckey;
+	    centry.displayName = cdescrs[ckey].displayName;
+	    centry.position = cpos++;
+	    if (descriptors[dkey].comparisonOperators[ckey] !== "")
+		centry.typeaheadUrl = descriptors[dkey].comparisonOperators[ckey];
+	    fentry.comparisonOperators.push(centry);
+	}
+	fields.push(fentry);
+    }
+
+    return fields;
+}
+
+
+function expandInitialSearchContainer(descr) {
+    var group = {};
+    group.logicalOperator = {
+	"name": descr.logicalOperator,
+	"displayName": logicalOperatorDescriptors()[descr.logicalOperator].displayName
+    };
+    group.sourceType = {
+	"name": descr.sourceType,
+	"displayName": sourceTypeDescriptors()[descr.sourceType].displayName
+    };
+    
+    var conditions = [];
+    var cmpDescrs = comparisonOperatorDescriptors();
+    for (var c = 0; c < descr.conditions.length; c++) {
+	var centry = {};
+	centry.sourceField = {
+	    "name": descr.conditions[c].sourceField,
+	    "displayName": firmFieldDescriptors()[descr.conditions[c].sourceField].displayName
+	};
+	centry.comparisonOperator = {
+	    "name": descr.conditions[c].comparisonOperator,
+	    "displayName": cmpDescrs[descr.conditions[c].comparisonOperator].displayName
+	};
+	centry.inputItem = {
+	    "data": descr.conditions[c].inputItem,
+	    "displayName": descr.conditions[c].inputItem
+	}
+	conditions.push(centry);
+    }
+    group.conditions = conditions;
+    group.groups = [];
+    
+    return {
+	"groups": [group]
+    };
+}
+
+
+function expandSourceTypes(descriptors) {
+    var result = [];
+    var spos = 1;
+    for (var key in descriptors) {
+	var entry = descriptors[key];
+	entry["name"] = key;
+	entry["position"] = spos++;
+	result.push(entry);
+    }
+    return result;
+};
+
+

@@ -2,7 +2,7 @@ function renderRestfulQuery(group) {
     if (!group) return "";
     var str = "";
     
-    //console.log("source type: "+JSON.stringify(group.sourceType,null,3));
+    //console.log("group: "+JSON.stringify(group,null,3));
     var descriptors = sourceTypeDescriptors();
     if (group.sourceType.name in descriptors) {
 	str = descriptors[group.sourceType.name]["baseurl"] + "?q=";
@@ -10,7 +10,8 @@ function renderRestfulQuery(group) {
 	str = "<unknown-root>?q=";
     }
     for (var i = 0; i < group.conditions.length; i++) {
-	i > 0 && (str += group.logicalOperator.displanYane);
+	var logOp = logicalOperatorDescriptors()[group.logicalOperator.name].queryText
+	i > 0 && (str += logOp);
         var condition = group.conditions[i];
         if (!!condition &&
 	    !!condition.sourceField &&
@@ -18,13 +19,12 @@ function renderRestfulQuery(group) {
 	    !!condition.inputItem) {
 	    var opStr = condition.comparisonOperator.name;
 	    var valStr = condition.inputItem.displayName;
-	    if (opStr === "LessEqual") {
-                str += condition.sourceField.name + ":[0 TO " + valStr + "]";
-	    } else if (opStr === "GreaterEqual") {
-                str += condition.sourceField.name + ":[" + valStr + " TO 999999999999]";
-	    } else {
-                str += condition.sourceField.name + opStr + valStr;
-	    }
+	    var field = condition.sourceField.name;
+	    var cmpDescrs = comparisonOperatorDescriptors();
+	    if (opStr in cmpDescrs) 
+		str += cmpDescrs[opStr].toString(field,valStr);
+	    else 
+                str += field + opStr + valStr;
         }
     }
     
@@ -41,4 +41,45 @@ function renderRestfulQuery(group) {
     
     return str;
 }
+
+
+var _comparisonOperatorDescriptors;
+function comparisonOperatorDescriptors() {
+    if (!!!_comparisonOperatorDescriptors) {
+	_comparisonOperatorDescriptors = {
+	    "Equals": {
+		"displayName": "=",
+		"toString": function(field,value) {return field+":"+value;}
+	    },
+	    "LessEqual": {
+		"displayName": "<=",
+		"toString": function(field,value) {return field+":[0 TO "+value+"]";}
+	    },
+	    "GreaterEqual": {
+		"displayName": ">=",
+		"toString": function(field,value) {return field+":["+value+" TO 999999999999]";}
+	    }
+	};
+    }
+    return _comparisonOperatorDescriptors;
+}
+
+
+var _logicalOperatorDescriptors;
+function logicalOperatorDescriptors() {
+    if (!!!_logicalOperatorDescriptors) {
+	_logicalOperatorDescriptors = {
+	    "And": {
+		"displayName": "AND",
+		"queryText": " AND "
+	    },
+	    "Or": {
+                "displayName": "OR",
+		"queryText": " OR "
+	    }
+	};
+    }
+    return _logicalOperatorDescriptors;
+}
+
 
