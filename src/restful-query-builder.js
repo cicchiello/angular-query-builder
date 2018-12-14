@@ -1,4 +1,4 @@
-﻿angular.module('cloudant-query-builder', [
+﻿angular.module('restful-query-builder', [
     'ngAnimate',
     'templates-aqb',
     'aqb.src.directives',

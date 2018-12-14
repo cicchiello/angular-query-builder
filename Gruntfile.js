@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 	app_distdir: 'dist/app',
     pkg: grunt.file.readJSON('package.json'),
     banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n' +
-            '/*! https://github.com/cicchiello/cloudant-query-builder */\n',
+            '/*! https://github.com/cicchiello/restful-query-builder */\n',
 	// variables used for plugins below
     src:{
         js: ['src/**/*.js'],
@@ -67,7 +67,7 @@ module.exports = function(grunt) {
 	html2js: {
 	    aqb: {
 	        src: ['src/**/*.tpl.html'],
-	        dest: '<%= app_distdir %>/js/cloudant-query-builder-templates.js'
+	        dest: '<%= app_distdir %>/js/restful-query-builder-templates.js'
 	    }
 	},
 	uglify: {
@@ -82,8 +82,8 @@ module.exports = function(grunt) {
 		    options: {
 		        banner: "<%= banner %>"
 		    },
-		    src: '<%= app_distdir %>/js/cloudant-query-builder-templates.js',
-		    dest: '<%= app_distdir %>/js/cloudant-query-builder-templates.min.js'
+		    src: '<%= app_distdir %>/js/restful-query-builder-templates.js',
+		    dest: '<%= app_distdir %>/js/restful-query-builder-templates.min.js'
 		}
 	},
 	watch:{

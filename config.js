@@ -340,34 +340,44 @@ function getSourceFields() {
 };
 
 
+var _sourceTypeDescriptors;
 function sourceTypeDescriptors() {
-    return {
-	"FirmStats": {
-	    "displayName": "Firm Stats",
-	    "sourceFields": getFirmFields(),
-	    "baseurl": getAwsBaseurl()
-	},
-        "Firms": {
-            "displayName": "Firms",
-            "sourceFields": getFirmFields(),
-	    "baseurl": getCloudantBaseurl()+getCloudantDDoc()+"/_search/atarget_advanced"
-        },
-        "Advisors": {
-            "displayName": "Advisors",
-            "sourceFields": this.getSourceFields()
-        }
-    };
+    if (!!!_sourceTypeDescriptors) {
+	_sourceTypeDescriptors = {
+	    "FirmStats": {
+		"displayName": "Firm Stats",
+		"sourceFields": getFirmFields(),
+		"baseurl": getAwsBaseurl()
+	    },
+            "Firms": {
+		"displayName": "Firms",
+		"sourceFields": getFirmFields(),
+		"baseurl": getCloudantBaseurl()+getCloudantDDoc()+"/_search/atarget_advanced"
+            },
+            "Advisors": {
+		"displayName": "Advisors",
+		"sourceFields": this.getSourceFields()
+            }
+	};
+    }
+    return _sourceTypeDescriptors;
 }
 
+
+var _sourceTypes;
 function getSourceTypes() {
-    var result = [];
-    var dict = sourceTypeDescriptors();
-    var i = 0;
-    for (var key in dict) {
-	var entry = dict[key];
-	entry["name"] = key;
-	entry["position"] = i++;
-	result.push(entry);
+    if (!!!_sourceTypes) {
+	var result = [];
+	var dict = sourceTypeDescriptors();
+	var i = 0;
+	for (var key in dict) {
+	    var entry = dict[key];
+	    entry["name"] = key;
+	    entry["position"] = i++;
+	    result.push(entry);
+	}
+	_sourceTypes = result;
     }
-    return result;
+    
+    return _sourceTypes;
 };

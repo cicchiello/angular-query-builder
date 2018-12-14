@@ -1,7 +1,8 @@
 function renderRestfulQuery(group) {
     if (!group) return "";
     var str = "";
-    console.log("source type: "+JSON.stringify(group.sourceType,null,3));
+    
+    //console.log("source type: "+JSON.stringify(group.sourceType,null,3));
     var descriptors = sourceTypeDescriptors();
     if (group.sourceType.name in descriptors) {
 	str = descriptors[group.sourceType.name]["baseurl"] + "?q=";
