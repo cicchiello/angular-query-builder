@@ -42,6 +42,8 @@ module.exports = function(grunt) {
 			files: [
                 { dest: '<%= app_distdir %>/libraries', src: '**', expand: true, cwd: 'libraries/' },
                 { dest: '<%= app_distdir %>/main.js', src: 'main.js' },
+                { dest: '<%= app_distdir %>/config.js', src: 'config.js' },
+                { dest: '<%= app_distdir %>/cloudant.js', src: 'cloudant.js' },
                 { dest: '<%= app_distdir %>/main.css', src: 'main.css' }
 			]
 		}
